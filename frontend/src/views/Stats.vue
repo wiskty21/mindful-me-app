@@ -1,13 +1,14 @@
 <template>
-  <div style="min-height: 100vh; display: flex; flex-direction: column; background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%); padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);">
+  <div class="screen flex-col safe-area-all" 
+       style="background: linear-gradient(135deg, var(--color-neutral-50) 0%, var(--color-primary-50) 100%);">
     <!-- ヘッダー -->
-    <header style="padding: 24px;">
+    <header style="padding: var(--space-6);">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h1 style="font-size: 24px; font-weight: 700; color: #1f2937;">
+        <h1 style="font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--color-neutral-800);">
           統計・履歴
         </h1>
-        <button @click="goBack" style="padding: 8px 16px; background: rgba(255, 255, 255, 0.1); border: none; border-radius: 12px; color: #374151; cursor: pointer; display: flex; align-items: center; transition: all 0.2s;">
-          <svg style="width: 20px; height: 20px; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button @click="goBack" class="btn-ghost">
+          <svg style="width: 20px; height: 20px; margin-right: var(--space-1);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           戻る
@@ -16,106 +17,106 @@
     </header>
 
     <!-- メインコンテンツ -->
-    <div style="flex: 1; padding: 0 24px; overflow-y: auto;">
-      <div style="max-width: 800px; margin: 0 auto;">
+    <div class="flex-1" style="padding: 0 var(--space-6); overflow-y: auto;">
+      <div class="container space-y-8">
         <!-- ローディング表示 -->
-        <div v-if="loading" style="display: flex; justify-content: center; align-items: center; padding: 48px;">
+        <div v-if="loading" class="center" style="padding: var(--space-12);">
           <div style="text-align: center;">
-            <div style="width: 40px; height: 40px; border: 3px solid #93c5fd; border-top: 3px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
-            <p style="color: #6b7280;">統計データを読み込み中...</p>
+            <div style="width: 40px; height: 40px; border: 3px solid var(--color-primary-200); border-top: 3px solid var(--color-primary-500); border-radius: var(--radius-full); animation: spin 1s linear infinite; margin: 0 auto var(--space-4);"></div>
+            <p style="color: var(--color-neutral-600);">統計データを読み込み中...</p>
           </div>
         </div>
 
         <!-- 統計サマリー -->
-        <div v-else style="margin-bottom: 24px;">
+        <div v-else class="space-y-6">
           <!-- メイン統計 -->
-          <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 24px;">
-            <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 24px;">
+          <div class="card-solid">
+            <h2 style="font-size: var(--text-xl); font-weight: var(--font-bold); color: var(--color-neutral-800); margin-bottom: var(--space-6);">
               全体統計
             </h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-              <div style="text-align: center; padding: 16px; background: #eff6ff; border-radius: 12px;">
-                <div style="font-size: 30px; font-weight: 700; color: #2563eb;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+              <div style="text-align: center; padding: var(--space-4); background: var(--color-primary-50); border-radius: var(--radius-lg);">
+                <div style="font-size: var(--text-3xl); font-weight: var(--font-bold); color: var(--color-primary-600);">
                   {{ stats.total_sessions || 0 }}
                 </div>
-                <div style="font-size: 14px; color: #6b7280;">総セッション数</div>
+                <div style="font-size: var(--text-sm); color: var(--color-neutral-600);">総セッション数</div>
               </div>
-              <div style="text-align: center; padding: 16px; background: #f3e8ff; border-radius: 12px;">
-                <div style="font-size: 30px; font-weight: 700; color: #7c3aed;">
+              <div style="text-align: center; padding: var(--space-4); background: var(--color-secondary-50); border-radius: var(--radius-lg);">
+                <div style="font-size: var(--text-3xl); font-weight: var(--font-bold); color: var(--color-secondary-600);">
                   {{ stats.total_minutes || 0 }}
                 </div>
-                <div style="font-size: 14px; color: #6b7280;">総瞑想時間（分）</div>
+                <div style="font-size: var(--text-sm); color: var(--color-neutral-600);">総瞑想時間（分）</div>
               </div>
-              <div style="text-align: center; padding: 16px; background: #ecfdf5; border-radius: 12px;">
-                <div style="font-size: 30px; font-weight: 700; color: #059669;">
+              <div style="text-align: center; padding: var(--space-4); background: var(--color-success-50); border-radius: var(--radius-lg);">
+                <div style="font-size: var(--text-3xl); font-weight: var(--font-bold); color: var(--color-success-600);">
                   {{ stats.current_streak || 0 }}
                 </div>
-                <div style="font-size: 14px; color: #6b7280;">現在の連続日数</div>
+                <div style="font-size: var(--text-sm); color: var(--color-neutral-600);">現在の連続日数</div>
               </div>
-              <div style="text-align: center; padding: 16px; background: #fef3c7; border-radius: 12px;">
-                <div style="font-size: 30px; font-weight: 700; color: #d97706;">
+              <div style="text-align: center; padding: var(--space-4); background: var(--color-warning-50); border-radius: var(--radius-lg);">
+                <div style="font-size: var(--text-3xl); font-weight: var(--font-bold); color: var(--color-warning-600);">
                   {{ stats.longest_streak || 0 }}
                 </div>
-                <div style="font-size: 14px; color: #6b7280;">最長連続日数</div>
+                <div style="font-size: var(--text-sm); color: var(--color-neutral-600);">最長連続日数</div>
               </div>
             </div>
           </div>
 
           <!-- 今月の統計 -->
-          <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 24px;">
-            <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 24px;">
+          <div class="card-solid">
+            <h2 style="font-size: var(--text-xl); font-weight: var(--font-bold); color: var(--color-neutral-800); margin-bottom: var(--space-6);">
               今月の活動
             </h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
-              <div style="text-align: center; padding: 12px;">
-                <div style="font-size: 24px; font-weight: 700; color: #2563eb;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4);">
+              <div style="text-align: center; padding: var(--space-3);">
+                <div style="font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--color-primary-600);">
                   {{ stats.monthly_sessions || 0 }}
                 </div>
-                <div style="font-size: 12px; color: #6b7280;">月間セッション</div>
+                <div style="font-size: var(--text-xs); color: var(--color-neutral-600);">月間セッション</div>
               </div>
-              <div style="text-align: center; padding: 12px;">
-                <div style="font-size: 24px; font-weight: 700; color: #7c3aed;">
+              <div style="text-align: center; padding: var(--space-3);">
+                <div style="font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--color-secondary-600);">
                   {{ stats.weekly_sessions || 0 }}
                 </div>
-                <div style="font-size: 12px; color: #6b7280;">週間セッション</div>
+                <div style="font-size: var(--text-xs); color: var(--color-neutral-600);">週間セッション</div>
               </div>
-              <div style="text-align: center; padding: 12px;">
-                <div style="font-size: 24px; font-weight: 700; color: #059669;">
+              <div style="text-align: center; padding: var(--space-3);">
+                <div style="font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--color-success-600);">
                   {{ Math.round(stats.average_duration || 0) }}
                 </div>
-                <div style="font-size: 12px; color: #6b7280;">平均時間（分）</div>
+                <div style="font-size: var(--text-xs); color: var(--color-neutral-600);">平均時間（分）</div>
               </div>
             </div>
           </div>
 
           <!-- 最近のセッション履歴 -->
-          <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 24px;">
-            <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 24px;">
+          <div class="card-solid">
+            <h2 style="font-size: var(--text-xl); font-weight: var(--font-bold); color: var(--color-neutral-800); margin-bottom: var(--space-6);">
               最近のセッション
             </h2>
-            <div v-if="sessions.length === 0" style="text-align: center; padding: 32px; color: #6b7280;">
+            <div v-if="sessions.length === 0" style="text-align: center; padding: var(--space-8); color: var(--color-neutral-500);">
               まだセッションがありません<br>
               瞑想を始めてみましょう
             </div>
-            <div v-else style="display: flex; flex-direction: column; gap: 16px;">
+            <div v-else class="space-y-4">
               <div 
                 v-for="session in sessions.slice(0, 5)" 
                 :key="session.id"
-                style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #f9fafb; border-radius: 12px;"
+                style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-4); background: var(--color-neutral-50); border-radius: var(--radius-lg);"
               >
                 <div>
-                  <div style="font-size: 16px; font-weight: 500; color: #1f2937;">
+                  <div style="font-size: var(--text-base); font-weight: var(--font-medium); color: var(--color-neutral-800);">
                     {{ session.duration }}分間の瞑想
                   </div>
-                  <div style="font-size: 14px; color: #6b7280;">
+                  <div style="font-size: var(--text-sm); color: var(--color-neutral-600);">
                     {{ formatDate(session.created_at) }}
                   </div>
                 </div>
                 <div style="text-align: right;">
-                  <div v-if="session.mood" style="font-size: 14px; color: #2563eb; font-weight: 500;">
+                  <div v-if="session.mood" style="font-size: var(--text-sm); color: var(--color-primary-600); font-weight: var(--font-medium);">
                     {{ getMoodEmoji(session.mood) }} {{ getMoodText(session.mood) }}
                   </div>
-                  <div style="font-size: 12px; color: #9ca3af;">
+                  <div style="font-size: var(--text-xs); color: var(--color-neutral-500);">
                     {{ session.type === 'timer' ? 'タイマー' : 'ガイド' }}
                   </div>
                 </div>
@@ -123,26 +124,26 @@
             </div>
             
             <!-- すべて見るボタン -->
-            <div v-if="sessions.length > 5" style="text-align: center; margin-top: 24px;">
-              <button @click="showAllSessions" style="padding: 12px 24px; background: #f3f4f6; border: none; border-radius: 12px; color: #374151; cursor: pointer; font-weight: 500;">
+            <div v-if="sessions.length > 5" style="text-align: center; margin-top: var(--space-6);">
+              <button @click="showAllSessions" class="btn-secondary-solid">
                 すべてのセッションを見る（{{ sessions.length }}）
               </button>
             </div>
           </div>
 
           <!-- 気分の分析 -->
-          <div v-if="stats.most_common_mood" style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 24px;">
-            <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 24px;">
+          <div v-if="stats.most_common_mood" class="card-solid">
+            <h2 style="font-size: var(--text-xl); font-weight: var(--font-bold); color: var(--color-neutral-800); margin-bottom: var(--space-6);">
               気分の傾向
             </h2>
-            <div style="text-align: center; padding: 24px;">
-              <div style="font-size: 4rem; margin-bottom: 16px;">
+            <div style="text-align: center; padding: var(--space-6);">
+              <div style="font-size: 4rem; margin-bottom: var(--space-4);">
                 {{ getMoodEmoji(stats.most_common_mood) }}
               </div>
-              <div style="font-size: 18px; font-weight: 500; color: #1f2937; margin-bottom: 8px;">
+              <div style="font-size: var(--text-lg); font-weight: var(--font-medium); color: var(--color-neutral-800); margin-bottom: var(--space-2);">
                 よく感じる気分: {{ getMoodText(stats.most_common_mood) }}
               </div>
-              <div style="font-size: 14px; color: #6b7280;">
+              <div style="font-size: var(--text-sm); color: var(--color-neutral-600);">
                 瞑想後に最も多く選ばれている気分です
               </div>
             </div>
@@ -150,15 +151,15 @@
         </div>
 
         <!-- エラー表示 -->
-        <div v-if="error" style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 16px; padding: 24px; margin-bottom: 24px;">
-          <div style="text-align: center; padding: 16px;">
-            <div style="color: #dc2626; font-weight: 500; margin-bottom: 8px;">
+        <div v-if="error" class="card-solid" style="border: 1px solid var(--color-error-200); background: var(--color-error-50);">
+          <div style="text-align: center; padding: var(--space-4);">
+            <div style="color: var(--color-error-600); font-weight: var(--font-medium); margin-bottom: var(--space-2);">
               データの読み込みに失敗しました
             </div>
-            <div style="color: #ef4444; font-size: 14px; margin-bottom: 16px;">
+            <div style="color: var(--color-error-500); font-size: var(--text-sm); margin-bottom: var(--space-4);">
               {{ error }}
             </div>
-            <button @click="loadData" style="padding: 12px 24px; background: #3b82f6; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 500;">
+            <button @click="loadData" class="btn-primary">
               再試行
             </button>
           </div>
