@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator</title>
+</head>
+<body>
+    <canvas id="canvas" width="512" height="512"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function generateIcon(size) {
+            canvas.width = size;
+            canvas.height = size;
+            
+            // グラデーション背景
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667EEA');
+            gradient.addColorStop(1, '#5A67D8');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // 円形にクリップ
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 太陽アイコン
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = size * 0.08;
+            ctx.lineCap = 'round';
+            
+            // 中央の円
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size * 0.15, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // 放射線
+            const rays = 8;
+            for (let i = 0; i < rays; i++) {
+                const angle = (i * Math.PI * 2) / rays;
+                const innerRadius = size * 0.25;
+                const outerRadius = size * 0.35;
+                
+                const x1 = size/2 + Math.cos(angle) * innerRadius;
+                const y1 = size/2 + Math.sin(angle) * innerRadius;
+                const x2 = size/2 + Math.cos(angle) * outerRadius;
+                const y2 = size/2 + Math.sin(angle) * outerRadius;
+                
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+            
+            return canvas.toDataURL('image/png');
+        }
+        
+        // 各サイズのアイコンを生成
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        
+        sizes.forEach(size => {
+            const dataUrl = generateIcon(size);
+            const link = document.createElement('a');
+            link.download = `icon-${size}x${size}.png`;
+            link.href = dataUrl;
+            link.textContent = `Download ${size}x${size}`;
+            link.style.display = 'block';
+            link.style.margin = '10px';
+            document.body.appendChild(link);
+        });
+    </script>
+</body>
+</html>
