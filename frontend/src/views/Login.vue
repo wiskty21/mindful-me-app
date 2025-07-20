@@ -84,6 +84,16 @@
               新規登録
             </router-link>
           </p>
+          
+          <!-- デモ・統計リンク -->
+          <div style="display: flex; gap: var(--space-4); justify-content: center; margin-top: var(--space-4);">
+            <button @click="demoLogin" class="btn-ghost" style="color: rgba(255, 255, 255, 0.8); font-size: var(--text-sm);">
+              デモでログイン
+            </button>
+            <router-link to="/profile" class="btn-ghost" style="color: rgba(255, 255, 255, 0.8); font-size: var(--text-sm);">
+              プロフィール
+            </router-link>
+          </div>
         </div>
       </div>
 
@@ -118,19 +128,23 @@ const error = ref('')
 const debugMode = ref(true) // 実機テスト時はtrueにする
 const clickCount = ref(0)
 
+const demoLogin = async () => {
+  loading.value = true
+  error.value = ''
+  
+  // 2秒待機してタイマー画面に遷移
+  setTimeout(() => {
+    loading.value = false
+    router.push('/timer')
+  }, 2000)
+}
+
 const handleLogin = async () => {
   clickCount.value++
   
   // 実機テスト用：バックエンドなしでも動作
   if (debugMode.value) {
-    loading.value = true
-    error.value = ''
-    
-    // 2秒待機してタイマー画面に遷移
-    setTimeout(() => {
-      loading.value = false
-      router.push('/timer')
-    }, 2000)
+    await demoLogin()
     return
   }
 

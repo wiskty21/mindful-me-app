@@ -274,6 +274,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { hapticButtonTap, hapticMediumImpact, hapticHeavyImpact, hapticSuccess, hapticSelection } from '@/utils/haptics.js'
+import { sessionAPI } from '@/utils/api'
 import BottomSheet from '@/components/BottomSheet.vue'
 
 const router = useRouter()
@@ -355,11 +356,27 @@ const resetTimer = () => {
   hapticButtonTap() // リセットボタンの軽いフィードバック
 }
 
-const completeTimer = () => {
+const completeTimer = async () => {
   pauseTimer()
   showCompleteModal.value = true
   hapticSuccess() // 瞑想完了の成功フィードバック
-  // 将来的にセッション記録をバックエンドに送信
+  
+  // セッション記録をバックエンドに送信
+  try {
+    const sessionData = {
+      start_time: new Date(Date.now() - selectedTime.value * 60 * 1000).toISOString(),
+      end_time: new Date().toISOString(),
+      duration: selectedTime.value,
+      type: 'timer',
+      mood: 'calm', // デフォルト値
+      note: `${selectedTime.value}分間の瞑想セッション`
+    }
+    
+    const response = await sessionAPI.createSession(sessionData)
+    console.log('セッション記録完了:', response.data)
+  } catch (error) {
+    console.error('セッション記録エラー:', error)
+  }
 }
 
 const closeModal = () => {

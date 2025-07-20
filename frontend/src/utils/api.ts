@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = 'http://localhost:8080'
+const API_BASE_URL = 'http://localhost:8081'
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -22,12 +22,35 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
-      // トークンが無効な場合、ログアウト処理
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('refresh_token')
-      window.location.href = '/'
+    const originalRequest = error.config
+    
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true
+      
+      try {
+        // リフレッシュトークンでアクセストークンを更新
+        const refreshToken = localStorage.getItem('refresh_token')
+        if (refreshToken) {
+          const response = await api.post('/api/v1/auth/refresh', {
+            refresh_token: refreshToken
+          })
+          
+          const { access_token, refresh_token: newRefreshToken } = response.data
+          localStorage.setItem('access_token', access_token)
+          localStorage.setItem('refresh_token', newRefreshToken)
+          
+          // 元のリクエストを再試行
+          originalRequest.headers.Authorization = `Bearer ${access_token}`
+          return api(originalRequest)
+        }
+      } catch (refreshError) {
+        // リフレッシュに失敗した場合、ログアウト処理
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
+        window.location.href = '/'
+      }
     }
+    
     return Promise.reject(error)
   }
 )

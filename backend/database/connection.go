@@ -20,6 +20,14 @@ func Connect(ctx context.Context) (*mongo.Database, error) {
 		uri = "mongodb://localhost:27017"
 	}
 
+	// Mock mode for development
+	if uri == "mock" {
+		log.Println("Using mock database for development")
+		// Return a mock database that doesn't actually connect
+		database = &mongo.Database{}
+		return database, nil
+	}
+
 	// 接続オプション
 	clientOptions := options.Client().
 		ApplyURI(uri).

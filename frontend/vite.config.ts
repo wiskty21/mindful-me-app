@@ -8,6 +8,7 @@ export default defineConfig({
     vue(),
     VitePWA({
       registerType: 'autoUpdate',
+      disable: false,
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
         runtimeCaching: [
@@ -82,9 +83,9 @@ export default defineConfig({
     })
   ],
   server: {
-    port: 3003,
+    port: 3000,
     host: '0.0.0.0', // ネットワーク経由でのアクセスを許可
-    strictPort: true
+    strictPort: false
   },
   resolve: {
     alias: {

@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import Timer from '@/views/Timer.vue'
+import Stats from '@/views/Stats.vue'
+import Profile from '@/views/Profile.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -31,6 +33,24 @@ const router = createRouter({
       meta: { 
         index: 2,
         title: '瞑想タイマー'
+      }
+    },
+    {
+      path: '/stats',
+      name: 'Stats',
+      component: Stats,
+      meta: { 
+        index: 3,
+        title: '統計・履歴'
+      }
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile,
+      meta: { 
+        index: 4,
+        title: 'プロフィール'
       }
     }
   ]
