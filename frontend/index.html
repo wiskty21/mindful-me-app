@@ -30,6 +30,37 @@
   <!-- iOS Safari対応 -->
   <meta name="format-detection" content="telephone=no" />
   <meta name="apple-mobile-web-app-orientations" content="portrait" />
+  
+  <!-- iOS ネイティブアプリ完全対応 -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-touch-fullscreen" content="yes" />
+  
+  <!-- iOS ステータスバー制御 -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  
+  <!-- iOS起動画面（スプラッシュスクリーン） -->
+  <link rel="apple-touch-startup-image" href="/icons/startup-568h.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" />
+  <link rel="apple-touch-startup-image" href="/icons/startup-667h.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" />
+  <link rel="apple-touch-startup-image" href="/icons/startup-736h.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" />
+  <link rel="apple-touch-startup-image" href="/icons/startup-812h.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
+  <link rel="apple-touch-startup-image" href="/icons/startup-896h.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" />
+  <link rel="apple-touch-startup-image" href="/icons/startup-1024h.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" />
+  
+  <!-- Android PWA -->
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="application-name" content="MindfulMe" />
+  
+  <!-- Windows PWA -->
+  <meta name="msapplication-TileImage" content="/icons/icon-144x144.png" />
+  <meta name="msapplication-TileColor" content="#3b82f6" />
+  <meta name="msapplication-config" content="/browserconfig.xml" />
+  
+  <!-- PWA 機能強化 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
+  
+  <!-- セキュリティ -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src 'self' https:; img-src 'self' data: blob:;" />
 </head>
 <body>
   <div id="app"></div>

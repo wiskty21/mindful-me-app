@@ -21,8 +21,8 @@ const defaultOptions = {
   restraint: 100,       // 垂直方向の最大許容移動距離（px）
   allowedTime: 300,     // スワイプと判定する最大時間（ms）
   velocity: 0.3,        // 最小スワイプ速度（px/ms）
-  preventDefault: true,  // デフォルトのタッチ動作を防ぐ
-  passive: false        // パッシブリスナーを使用しない
+  preventDefault: false, // iOS Safariでボタン・入力を阻害しないよう変更
+  passive: true         // パッシブリスナーを使用してパフォーマンス向上
 }
 
 /**
@@ -100,6 +100,11 @@ export class SwipeDetector {
   }
 
   onTouchStart(event) {
+    // ボタンや入力フィールドでのスワイプは無視
+    if (this.isInteractiveElement(event.target)) {
+      return
+    }
+    
     if (this.options.preventDefault) {
       event.preventDefault()
     }
@@ -152,6 +157,34 @@ export class SwipeDetector {
       this.triggerHandler(direction, { deltaX, deltaY, duration, velocity })
       return
     }
+  }
+
+  // インタラクティブ要素かどうかの判定
+  isInteractiveElement(element) {
+    const interactiveTags = ['BUTTON', 'INPUT', 'TEXTAREA', 'SELECT', 'A']
+    const interactiveRoles = ['button', 'link', 'textbox']
+    
+    // タグ名での判定
+    if (interactiveTags.includes(element.tagName)) {
+      return true
+    }
+    
+    // role属性での判定
+    if (interactiveRoles.includes(element.getAttribute('role'))) {
+      return true
+    }
+    
+    // クリックハンドラーがある要素
+    if (element.onclick || element.hasAttribute('onclick')) {
+      return true
+    }
+    
+    // Vue.jsのクリックディレクティブ
+    if (element.hasAttribute('data-v-') && element.style.cursor === 'pointer') {
+      return true
+    }
+    
+    return false
   }
 
   triggerHandler(direction, data) {

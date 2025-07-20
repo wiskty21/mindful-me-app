@@ -25,6 +25,8 @@
   /* iOS タッチ最適化 */
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .btn-primary:hover {
@@ -67,6 +69,8 @@
   /* iOS タッチ最適化 */
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .btn-secondary:hover {

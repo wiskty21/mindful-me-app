@@ -26,3 +26,16 @@ console.log('Vue app created with Pinia, router, and iOS directives')
 
 app.mount('#app')
 console.log('Vue app mounted')
+
+// PWA更新通知
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('SW registered: ', registration)
+      })
+      .catch((registrationError) => {
+        console.log('SW registration failed: ', registrationError)
+      })
+  })
+}

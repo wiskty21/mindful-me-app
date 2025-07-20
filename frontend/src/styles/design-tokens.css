@@ -167,6 +167,11 @@ body {
   
   /* iOS スムーススクロール */
   -webkit-overflow-scrolling: touch;
+  
+  /* iOS Safari タッチ最適化 */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
 }
 
 /* === Safe Area 対応 === */
