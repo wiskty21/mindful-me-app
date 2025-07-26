@@ -618,3 +618,116 @@ curl -X POST http://localhost:8081/api/v1/auth/login \
 - ネイティブアプリと見分けがつかない品質
 
 **🚀 次は実用化・収益化段階へ**
+
+## 🛠 CSS設計システム統一化（2025-07-21 01:45）
+
+### ✅ デザインシステム一貫性確保
+
+#### 問題と解決
+**発生した問題:**
+- Stats.vueでCSS変数(`var(--color-primary-50)`)が未定義で背景のみ表示
+- 統一デザインシステムとの不整合により表示不具合
+
+**解決アプローチ:**
+1. **直接スタイル値で緊急修正** → 正常表示確認
+2. **CSS変数版に復元** → デザインシステム統一性重視
+
+#### 修正内容比較
+
+**修正前（CSS変数版）:**
+```vue
+<div class="screen flex-col safe-area-all" 
+     style="background: linear-gradient(135deg, var(--color-neutral-50) 0%, var(--color-primary-50) 100%);">
+  <div class="card-solid">
+    <div style="background: var(--color-primary-50); color: var(--color-primary-600);">
+      {{ stats.total_sessions || 0 }}
+    </div>
+  </div>
+</div>
+```
+
+**一時修正（直接スタイル値）:**
+```vue
+<div style="min-height: 100vh; background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);">
+  <div style="background: white; border-radius: 16px; padding: 24px;">
+    <div style="background: #eff6ff; color: #2563eb;">
+      {{ stats.total_sessions || 0 }}
+    </div>
+  </div>
+</div>
+```
+
+**最終版（CSS変数復元）:**
+```vue
+<div class="screen flex-col safe-area-all" 
+     style="background: linear-gradient(135deg, var(--color-neutral-50) 0%, var(--color-primary-50) 100%);">
+  <div class="card-solid">
+    <div style="background: var(--color-primary-50); color: var(--color-primary-600);">
+      {{ stats.total_sessions || 0 }}
+    </div>
+  </div>
+</div>
+```
+
+### 🎯 設計方針の確定
+
+#### 1. **統一デザインシステム優先**
+- CSS Custom Properties (`var(--color-primary-50)`) 使用
+- 共通クラス (`card-solid`, `btn-ghost`) 活用
+- デザイントークン (`var(--space-6)`, `var(--text-xl)`) 準拠
+
+#### 2. **コンポーネント間一貫性**
+- Login.vue, Timer.vue と同じ変数・クラス体系
+- `/frontend/src/styles/design-tokens.css` に集約
+- `/frontend/src/styles/components.css` で共通化
+
+#### 3. **保守性重視**
+- 色変更時は変数定義1箇所で全体反映
+- レスポンシブ・ダークモード対応の基盤
+- 将来的な機能拡張に柔軟対応
+
+### 📊 Git履歴管理
+
+#### コミット履歴
+1. **17770a6** - バックエンド統合完了（直接スタイル版Stats.vue含む）
+2. **a899780** - CSS変数版復元（デザインシステム統一）
+
+#### 設計システムファイル構成
+```
+/frontend/src/styles/
+├── design-tokens.css    # カラー・フォント・スペーシング定義
+├── components.css       # ボタン・カード・レイアウトクラス
+└── style.css           # グローバルスタイル・iOS最適化
+```
+
+### 🔧 次期改善点
+
+#### Phase 1: CSS変数完全統合
+1. **design-tokens.css読み込み確認**
+   - 全ページでCSS変数が正常動作するか検証
+   - 未定義変数の洗い出しと定義追加
+
+2. **コンポーネントクラス統一**
+   - Profile.vue, Timer.vue等でクラス使用統一
+   - 共通スタイルの components.css 集約
+
+#### Phase 2: ダークモード対応
+1. **CSS変数でテーマ切り替え基盤構築**
+   - ライト/ダークテーマの変数定義
+   - システム設定連動の実装
+
+2. **アクセシビリティ強化**
+   - ハイコントラストモード対応
+   - 動的フォントサイズ対応
+
+### 💡 学習ポイント
+
+#### デザインシステム設計の重要性
+- **一貫性 > 即効性**: 直接修正より設計システム準拠を優先
+- **保守性重視**: CSS変数による中央集権的スタイル管理
+- **段階的改善**: 問題発見 → 緊急修正 → 根本解決の3段階アプローチ
+
+#### フロントエンド品質向上
+- デザインシステムとコンポーネント設計の連携
+- Git履歴での設計判断の記録・追跡
+- 技術的負債の早期解決（直接スタイル → 変数化）
